@@ -1084,23 +1084,3 @@ Agent = Decision
 
 ---
 
-# 23. Tài liệu tham khảo
-
-Project được tham khảo ý tưởng kiến trúc và cách tổ chức từ một số Smart Document Assistant sử dụng RAG:
-
-- `vigkrishna/RAG-based-Smart-Document-Assistant`
-  - PDF document processing.
-  - Embedding.
-  - Vector storage.
-  - Context retrieval.
-  - LLM generation.
-
-- `bhavana1312/smart-doc-assistant`
-  - PDF upload.
-  - RAG Question Answering.
-  - FastAPI backend.
-  - Qdrant Vector Search.
-  - Sentence Transformers.
-  - Khả năng mở rộng thành quiz và learning assistant.
-
-Project này không sao chép nguyên kiến trúc của các repository trên mà sử dụng chúng làm tài liệu tham khảo để xây dựng một pipeline RAG từ cơ bản đến hoàn chỉnh.
