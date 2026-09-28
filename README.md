@@ -1104,13 +1104,3 @@ Project được tham khảo ý tưởng kiến trúc và cách tổ chức từ
   - Khả năng mở rộng thành quiz và learning assistant.
 
 Project này không sao chép nguyên kiến trúc của các repository trên mà sử dụng chúng làm tài liệu tham khảo để xây dựng một pipeline RAG từ cơ bản đến hoàn chỉnh.
-
----
-
-# 24. Tác giả
-
-**Project:** Smart Document Assistant using RAG
-
-**Môn học:** New Technologies in Software Engineering
-
-**Năm:** 2026
