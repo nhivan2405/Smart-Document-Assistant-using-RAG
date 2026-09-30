@@ -17,3 +17,6 @@ EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12
 # ChromaDB
 CHROMA_PATH = PROJECT_ROOT / "chroma_db"
 COLLECTION_NAME = "course_documents"
+
+#Retrival
+TOP_K =3
