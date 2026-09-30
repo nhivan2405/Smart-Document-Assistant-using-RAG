@@ -1,55 +1,66 @@
-"""Lưu vector và metadata vào Qdrant."""
+"""Lưu vector, document và metadata vào ChromaDB."""
 
-from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams, PointStruct
+import chromadb
 
-from config import QDRANT_URL, COLLECTION_NAME
-
-
-# Kết nối đến Qdrant
-client = QdrantClient(url=QDRANT_URL)
+from config import CHROMA_PATH, COLLECTION_NAME
 
 
-def create_collection(vector_size):
-    """Tạo collection để lưu vector."""
+# Kết nối ChromaDB local
+client = chromadb.PersistentClient(
+    path=str(CHROMA_PATH)
+)
 
-    # Nếu collection đã tồn tại thì xóa để test lại từ đầu
-    if client.collection_exists(COLLECTION_NAME):
-        client.delete_collection(COLLECTION_NAME)
 
-    # Tạo collection mới
-    client.create_collection(
-        collection_name=COLLECTION_NAME,
-        vectors_config=VectorParams(
-            size=vector_size,
-            distance=Distance.COSINE
-        )
+def create_collection():
+    """Tạo collection mới để lưu document vectors."""
+
+    # Chỉ dùng cho quá trình học/test:
+    # nếu collection cũ tồn tại thì xóa để tạo lại sạch
+    try:
+        client.delete_collection(name=COLLECTION_NAME)
+    except Exception:
+        pass
+
+    collection = client.create_collection(
+        name=COLLECTION_NAME
     )
+
+    return collection
 
 
 def store_vectors(chunks, vectors):
-    """Lưu vectors cùng metadata của chunks vào Qdrant."""
+    """Lưu chunks, vectors và metadata vào ChromaDB."""
 
-    points = []
+    collection = create_collection()
 
-    # Ghép từng chunk với vector tương ứng
-    for point_id, (chunk, vector) in enumerate(zip(chunks, vectors)):
+    ids = []
+    documents = []
+    embeddings = []
+    metadatas = []
 
-        point = PointStruct(
-            id=point_id,
-            vector=vector.tolist(),
-            payload={
-                "filename": chunk["filename"],
-                "page": chunk["page"],
-                "chunk_index": chunk["chunk_index"],
-                "text": chunk["text"]
-            }
+    for index, (chunk, vector) in enumerate(zip(chunks, vectors)): #lưu dữ liệu
+
+        ids.append(str(index))
+
+        documents.append(
+            chunk["text"]
         )
 
-        points.append(point)
+        embeddings.append(
+            vector.tolist()
+        )
 
-    # Lưu tất cả points vào Qdrant
-    client.upsert(
-        collection_name=COLLECTION_NAME,
-        points=points
+        metadatas.append({
+            "filename": chunk["filename"],
+            "page": chunk["page"],
+            "chunk_index": chunk["chunk_index"]
+        })
+
+    collection.add( #lưu tất cả vào chromadb
+        ids=ids,
+        documents=documents,
+        embeddings=embeddings,
+        metadatas=metadatas
     )
+
+    return collection

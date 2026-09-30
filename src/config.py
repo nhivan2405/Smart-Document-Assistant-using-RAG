@@ -14,6 +14,6 @@ CHUNK_OVERLAP = 50     # Phần nội dung chồng lấn giữa 2 chunk
 # Model chuyển text thành vector
 EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
-# Vector Database
-QDRANT_URL = "http://localhost:6333"
+# ChromaDB
+CHROMA_PATH = PROJECT_ROOT / "chroma_db"
 COLLECTION_NAME = "course_documents"
